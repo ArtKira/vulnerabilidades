@@ -4,5 +4,11 @@
 {{estado}}<br>
 {{protocolo}}<br>
 
-{{resultado}}
+{% comment %} {{resultado}} {% endcomment %}
+<ul>
+    {% for port in resultado %}
+        <li>{{ port }}</li>
+    {% endfor %}
+</ul>
+    
 

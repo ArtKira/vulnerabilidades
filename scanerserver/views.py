@@ -19,6 +19,7 @@ def result(request):#aqui resive la direccion IP para su escaneo
 
         lport = nm[host][proto].keys()
         sorted(lport)
+    r = []
     for port in lport:#recorre todos los puertos y los muestra, muestra su estado 
-        r='port : %s\tstate : %s' % (port, nm[host][proto][port]['state'])
-        return render(request, 'result.html', {'host':statehost, 'resultado': r, 'estado':state, 'protocolo':protocolo})#retorna todos los valores
+        r.append('port : %s\tstate : %s' % (port, nm[host][proto][port]['state']))
+    return render(request, 'result.html', {'host':statehost, 'resultado': r, 'estado':state, 'protocolo':protocolo})#retorna todos los valores
