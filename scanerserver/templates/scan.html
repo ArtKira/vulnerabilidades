@@ -1,19 +1,22 @@
+{% extends "base.html" %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{% block title %}Scan{% endblock %}</title>
 </head>
 <body>
-    <h1>Scan Server</h1>
-    <h2>Escanea los puertos en tus dispositivos de RED</h2>
+    {% block content %}
+    <h1 class="titulo-principal">Scan Server</h1>
+    <h2 class="titulo-secundario">Escanea los puertos en tus dispositivos de RED</h2>
 
-    <form action="result">
-        <label for="host">Ingresa la direccion IP a escanear</label>
-        <input type="text" id="host" name="host">
-        <button>Escanear</button>
+    <form class="form-escaneo" action="result">
+        <label class="etiqueta-formulario" for="host">Ingresa la direccion IP a escanear</label>
+        <input class="input-escaneo" type="text" id="host" name="host">
+        <button class="boton-escaneo">Escanear</button>
     </form>
+    {% endblock %}
 </body>
 </html>
