@@ -1,14 +1,15 @@
-<h1>tu ip es {{host}}</h1>
-<br>
-{{host}}<br>
-{{estado}}<br>
-{{protocolo}}<br>
+{% extends "base.html" %}
 
-{% comment %} {{resultado}} {% endcomment %}
-<ul>
+{% block content %}
+<h1 class="titulo-resultado">Tu IP es {{host}}</h1>
+<p class="ip-resultado">{{host}}</p>
+<p class="info-resultado">{{estado}}<br>{{protocolo}}</p>
+
+<ul class="lista-resultado">
     {% for port in resultado %}
-        <li>{{ port }}</li>
+        <li class="item-resultado">{{ port }}</li>
     {% endfor %}
 </ul>
-    
+
+{% endblock %}
 
