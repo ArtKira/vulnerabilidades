@@ -9,7 +9,7 @@ def scan(request):#definimos las funciones a ejecutar
 
 def result(request):#aqui resive la direccion IP para su escaneo
     host=request.GET.get('host')
-    nm=nmap.PortScanner(host)
+    nm=nmap.PortScanner()
     resultado=nm.scan(host,  arguments='-T5')
 
     statehost="Host : %s" % (host)#muestra el estado 
