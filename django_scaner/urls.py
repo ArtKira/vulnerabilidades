@@ -19,5 +19,7 @@ from scanerserver import views#se impprta las vistas desde la app de scaner serv
 urlpatterns = [
    # path('admin/', admin.site.urls),#ejemplo de mas vistas 
    path('', views.scan),#la url lo que se vera en navegador junto con la funcion a ejecutar 
-   path('result', views.result)#se crea la vista resultado 
+   path('result', views.result),#se crea la vista resultado 
+   path('whatweb', views.whatweb),#utilizando whatweb
+   path('scan', views.scan)
 ]
