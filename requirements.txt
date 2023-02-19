@@ -12,3 +12,4 @@ soupsieve==2.4
 sqlparse==0.4.3
 urllib3==1.26.14
 whatweb==0.0.7
+openai==0.26.5

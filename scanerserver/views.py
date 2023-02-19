@@ -1,5 +1,6 @@
 from django.shortcuts import render
 import nmap, subprocess
+import openai
 
 #from django.http import HttpResponse
 
@@ -36,3 +37,10 @@ def whatweb(request):#Hacemos uso del script whatweb
         resultado = subprocess.check_output(comando).decode('utf-8')# Ejecutamos y guardamos el output del comando
         return render(request, 'whatweb.html', {'result':resultado, 'dominio':domain}) #Cargamos los datos
     return render(request, 'whatweb.html')# Entras a la plantilla vacia
+
+def generate_text(request):#IA
+    openai.api_key="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"#key de openAI
+    completion=openai.Completion.create(engine="text-davinci-003", prompt="hola", max_tokens=2048)#indicamos el texto que va a crear que va a recibir 
+    answ=completion.choices[0].text
+    return render(request, 'generate_text.html', {'answ': answ})#caragamos los datos 
+

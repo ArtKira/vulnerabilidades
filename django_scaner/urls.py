@@ -21,5 +21,6 @@ urlpatterns = [
    path('', views.scan),#la url lo que se vera en navegador junto con la funcion a ejecutar 
    path('result', views.result),#se crea la vista resultado 
    path('whatweb', views.whatweb),#utilizando whatweb
+   path('generate_text', views.generate_text),
    path('scan', views.scan)
 ]
