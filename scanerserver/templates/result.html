@@ -6,9 +6,13 @@
 <p class="info-resultado">{{estado}}<br>{{protocolo}}</p>
 
 <ul class="lista-resultado">
+    <form method="get" action="generate_text">
     {% for port in resultado %}
-        <li class="item-resultado">{{ port }}</li>
+        <button class="btn btn-primary position-relative" type="submit"><li class="item-resultado"><h4>{{port}}</h4></li>
+         <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2"><span class="visually-hidden"></span></span>
+        </button> 
     {% endfor %}
+    </form>  
 </ul>
 
 {% endblock %}
