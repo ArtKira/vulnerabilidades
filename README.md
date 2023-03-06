@@ -51,4 +51,4 @@ Agregar licecnia a futuro y crear un archivo -> ``LICENSE``
 ## Creadores
 
  - [https://github.com/Aguilar0607](https://github.com/Aguilar0607/)
- - [https://github.com/Aguilar0607](https://github.com/ArtKira/)
+ - [https://github.com/ArtKira](https://github.com/ArtKira/)
