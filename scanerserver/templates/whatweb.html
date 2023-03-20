@@ -1,20 +1,36 @@
 {% extends "base.html" %}
-<title>{% block title %}Whatweb{% endblock %}</title>
+{% block title %}Whatweb{% endblock %}
 {% block content %}
 <h1 class="titulo-resultado">Whatweb</h1>
-<form method="post" action="whatweb">
+<form method="post" action="/whatweb/">
     {% csrf_token %}
     <label class="etiqueta-formulario" for="domain">Ingresa un dominio a escanear</label>
     <input class="input-escaneo" type="text" id="domain" name="domain">
     <button type="submit" class="boton-escaneo">Escanear</button>
 </form>
-<p class="ip-resultado">{{result}}</p>
-{% if dominio == '' %}
+
+{% if result %}
+<table class="table-dark">
+    <thead>
+        <tr>
+            <th>Plugin</th>
+            <th>Resultado</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for plugin, data in result.0.plugins.items %}
+        <tr>
+            <td>{{ plugin }}</td>
+            <td>{{ data.string|default:'' }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% if domain == '' %}
     <p class="ip-resultado">Dominio: Aun no ingresas un dominio</p>
 {% else %}
-    <p class="ip-resultado">Dominio: {{dominio}}</p>
-{%endif%}
-
-
+    <p class="ip-resultado">Dominio: {{ domain }}</p>
+{% endif %}
 {% endblock %}
-

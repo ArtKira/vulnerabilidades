@@ -1,5 +1,5 @@
 from django.shortcuts import render
-import nmap, subprocess
+import nmap, json, subprocess
 import openai
 
 #from django.http import HttpResponse
@@ -30,13 +30,22 @@ def result(request):#aqui resive la direccion IP para su escaneo
             return render(request, 'nullport.html', {'host':statehost, 'estado':state})
     return render(request, 'scan.html')
     
-def whatweb(request):#Hacemos uso del script whatweb
-    if request.method == 'POST':#Verificamos que la peticion sea por post
-        domain = request.POST.get('domain')# Obtenemos el nombre del dominio o direccion IP
-        comando = ['whatweb', '--color=never', domain]# Establecemos el comando
-        resultado = subprocess.check_output(comando).decode('utf-8')# Ejecutamos y guardamos el output del comando
-        return render(request, 'whatweb.html', {'result':resultado, 'dominio':domain}) #Cargamos los datos
-    return render(request, 'whatweb.html')# Entras a la plantilla vacia
+
+def whatweb(domain):
+    comando = ['whatweb', '--quiet', '--log-json=-', '--color=never', domain]
+    output = subprocess.check_output(comando).decode('utf-8')
+    json_line = output.strip()
+    resultado_json = json.loads(json_line)
+    return resultado_json
+
+def whatweb_view(request):
+    if request.method == 'POST':
+        domain = request.POST.get('domain')
+        result = whatweb(domain)
+        return render(request, 'whatweb.html', {'result': result, 'domain': domain})
+    return render(request, 'whatweb.html')
+
+
 
 # def generate_text(request):#IA
 #     openai.api_key=""#key de openAI

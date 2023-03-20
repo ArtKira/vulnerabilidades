@@ -1,0 +1,36 @@
+/* Estilo para la tabla en modo oscuro */
+.table-dark {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+}
+
+.table-dark th,
+.table-dark td {
+    border: 1px solid #AAA;
+    padding: 10px;
+    text-align: left;
+}
+
+.table-dark thead {
+    background-color: #333;
+    color: #FFF;
+}
+
+.table-dark thead th {
+    font-weight: bold;
+}
+
+.table-dark tbody tr:nth-child(even) {
+    background-color: #444;
+    color: #FFF;
+}
+
+.table-dark tbody tr:nth-child(odd) {
+    background-color: #333;
+    color: #FFF;
+}
+
+.table-dark tbody tr:hover {
+    background-color: #555;
+}
