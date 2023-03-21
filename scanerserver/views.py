@@ -47,13 +47,19 @@ def whatweb_view(request):
 
 
 
-# def generate_text(request):#IA
-#     openai.api_key=""#key de openAI
-#     completion=openai.Completion.create(engine="text-davinci-003", prompt="hola", max_tokens=2048)#indicamos el texto que va a crear que va a recibir 
-#     answ=completion.choices[0].text
-#     return render(request, 'generate_text.html', {'answ': answ})#caragamos los datos 
+def generate_text(request): # recibimos por request el puerto
+    port = request.GET.get('port')
+    if port:
+        openai.api_key=""#key de openAI
+        prompt = f"Describe el puerto {port} y su función principal:"
+        completion=openai.Completion.create(engine="text-davinci-003", prompt=prompt, max_tokens=2048)
+        answ=completion.choices[0].text
+        return render(request, 'generate_text.html', {'answ': answ, 'port': port})
+    else:
+        return render(request, 'error.html', {'error': "El puerto proporcionado no es válido."})
 
-def generate_text(request):
-    if request.method=='GET':
-        port=request.POST.get('h')
-        return render(request, 'generate_text.html', {'port':port})
+
+# def generate_text(request):
+#     if request.method=='GET':
+#         port=request.POST.get('h')
+#         return render(request, 'generate_text.html', {'port':port})

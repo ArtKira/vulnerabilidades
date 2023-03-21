@@ -21,7 +21,7 @@
     {% for plugin, data in result.0.plugins.items %}
         <tr>
             <td>{{ plugin }}</td>
-            <td>{{ data.string|default:'' }}</td>
+            <td>{{ data.string|join:', '|default:'' }}</td>
         </tr>
     {% endfor %}
     </tbody>
