@@ -7,7 +7,8 @@
 <p class="info-resultado">{{estado}}<br>{{protocolo}}</p>
 
 <ul class="lista-resultado">
-    <form method="get" action="generate_text">
+    <form method="post" action="generate_text">
+    {% csrf_token %}
     {% for port in resultado %}
         <button class="btn btn-primary position-relative" type="submit" name="port" value="{{port}}"><li class="item-resultado"><h4>{{port}}</h4></li>
          <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2"><span class="visually-hidden"></span></span>

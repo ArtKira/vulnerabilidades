@@ -48,9 +48,9 @@ def whatweb_view(request):
 
 
 def generate_text(request): # recibimos por request el puerto
-    port = request.GET.get('port')
+    port = request.POST.get('port')
     if port:
-        openai.api_key=""#key de openAI
+        openai.api_key="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"#key de openAI
         prompt = f"Describe el puerto {port} y su función principal:"
         completion=openai.Completion.create(engine="text-davinci-003", prompt=prompt, max_tokens=2048)
         answ=completion.choices[0].text
