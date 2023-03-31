@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>VulScaner Intelligent</h1>
+{% load static %}
+{{ error }}
+<form method="POST">
+{% csrf_token %}
+<img src="{% static '../static/ransomware.svg'%}" alt="">
+{{ form.as_p }}
+
+<button>
+     Registro
+</button>
+</form>
+        
+{% endblock %}
