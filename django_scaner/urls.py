@@ -15,14 +15,17 @@ Including another URLconf
 """
 #from django.contrib import admin
 from django.urls import path
+from scanerserver.views import ChangePasswordView
 from scanerserver import views#se impprta las vistas desde la app de scaner server 
 urlpatterns = [
-    # path('admin/', admin.site.urls),#ejemplo de mas vistas 
+    #path('admin/', admin.site.urls, name='admin'),#ejemplo de mas vistas 
     path('', views.Login, name='Login'),#Url del login que sera la primera en ver
     # path('', views.scan),#la url lo que se vera en navegador junto con la funcion a ejecutar 
     path('result', views.result),#se crea la vista resultado 
     path('whatweb/', views.whatweb_view, name='whatweb'), # nota la barra diagonal al final
     path('generate_text', views.generate_text),
     path('scan', views.scan, name='scan'),
+    path('Logout/', views.Logout, name='Logout'),
+    path('change_password/', ChangePasswordView.as_view(), name='change_password'),
     #path('Registro/', views.Registro, name='Registro')#Borrar despues 
 ]

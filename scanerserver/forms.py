@@ -10,3 +10,4 @@ class CustomAuthenticationForm(AuthenticationForm):
         self.fields['username'].widget.attrs['placeholder'] = 'Ingrese su usuario'
         self.fields['password'].widget.attrs['placeholder'] = 'Ingrese su contraseña'
 
+

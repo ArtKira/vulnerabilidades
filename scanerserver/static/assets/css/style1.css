@@ -32,6 +32,10 @@ body * {
     font-size: 3vw;
     color: #00bfff;
 }
+.left-login > p{
+  color: #00bfff;
+  line-height: 1; 
+}
 .left-img{
     width: 20vw;
 }

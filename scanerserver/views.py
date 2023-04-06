@@ -8,6 +8,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from .forms import CustomAuthenticationForm
+############### Change Password ###########
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
 
 #from django.http import HttpResponse
 
@@ -95,27 +98,12 @@ def Login(request):
             login(request, user)
             return redirect('scan')
 
-'''@login_required        
-def Registro(request):
-    if request.method == 'GET':
-        return render(request, 'Registro.html', {
-            'form': UserCreationForm
-        })
-    else:
-        if request.POST['password1'] == request.POST['password2']:
-            try:
-                user = User.objects.create_user(
-                    username=request.POST['username'], password=request.POST['password1'])
-                user.save()
-                login(request, user)
-                return redirect('scan')
-            except:
-                return render(request, 'Registro.html', {
-                    'form': UserCreationForm,
-                    'error': 'Usuario ya exites'
-                })
-        return render(request, 'Registro.html', {
-            'form': UserCreationForm,
-            "error": 'Contraseñas no coiciden'
-        })'''
+@login_required
+def Logout(request):
+    logout(request)
+    return redirect('Login')
+
+class ChangePasswordView(PasswordChangeView):
+    template_name = 'change_password.html'
+    success_url = reverse_lazy('Login')
 
