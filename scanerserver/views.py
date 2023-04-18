@@ -1,5 +1,5 @@
 from django.shortcuts import render
-import nmap, json, subprocess
+import nmap, json, subprocess, re
 import openai
 
 #from django.http import HttpResponse
@@ -57,6 +57,39 @@ def generate_text(request): # recibimos por request el puerto
         return render(request, 'generate_text.html', {'answ': answ, 'port': port})
     else:
         return render(request, 'error.html', {'error': "El puerto proporcionado no es válido."})
+    
+
+def arp_scan_json():
+    output = subprocess.check_output(["arp-scan", "--localnet"]).decode('utf-8')
+
+    start_index = None
+    for i, line in enumerate(output.splitlines()):
+        if "Starting arp-scan" in line:
+            start_index = i + 1
+            break
+
+    devices = []
+    if start_index is not None:
+        for line in output.splitlines()[start_index:]:
+            match = re.match(r'(\d+\.\d+\.\d+\.\d+)\s+([\w:]+)\s+(.+)', line)
+            if match:
+                ip_address, mac_address, manufacturer = match.groups()
+                device = {
+                    'ip_address': ip_address,
+                    'mac_address': mac_address,
+                    'manufacturer': manufacturer
+                }
+                devices.append(device)
+            else:
+                break
+
+    return devices
+
+def arp_scan_view(request):
+    if request.method == 'POST':
+        devices = arp_scan_json()
+        return render(request, 'arp_scan.html', {'devices': devices})
+    return render(request, 'arp_scan.html')
 
 
 # def generate_text(request):

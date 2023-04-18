@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+<title>{% block title %}Arp-Scan{% endblock %}</title>
+{% block content %}
+  <h1>Escáner de dispositivos en red local</h1>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Escanear dispositivos</button>
+  </form>
+
+  {% if devices %}
+    <h2>Dispositivos encontrados</h2>
+    <table border="1" class="table-dark">
+      <thead>
+        <tr>
+          <th>Dirección IP</th>
+          <th>Dirección MAC</th>
+          <th>Fabricante</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for device in devices %}
+          <tr>
+            <td>{{ device.ip_address }}</td>
+            <td>{{ device.mac_address }}</td>
+            <td>{{ device.manufacturer }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+{% endblock %}

@@ -18,9 +18,10 @@ from django.urls import path
 from scanerserver import views#se impprta las vistas desde la app de scaner server 
 urlpatterns = [
     # path('admin/', admin.site.urls),#ejemplo de mas vistas 
-    path('', views.scan),#la url lo que se vera en navegador junto con la funcion a ejecutar 
+    path('', views.arp_scan_view),#la url lo que se vera en navegador junto con la funcion a ejecutar 
     path('result', views.result),#se crea la vista resultado 
     path('whatweb/', views.whatweb_view, name='whatweb'), # nota la barra diagonal al final
     path('generate_text', views.generate_text),
-    path('scan', views.scan)
+    path('scan', views.scan),
+    path('arp_scan', views.arp_scan_view, name='arp_scan'),
 ]
