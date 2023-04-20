@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
-<title>{% block title %}Arp-Scan{% endblock %}</title>
+{% load static %}
+
+
 {% block content %}
   <h1>Escáner de dispositivos en red local</h1>
   <form method="post">
@@ -16,6 +18,7 @@
           <th>Dirección IP</th>
           <th>Dirección MAC</th>
           <th>Fabricante</th>
+          <th>Acción</th>
         </tr>
       </thead>
       <tbody>
@@ -24,9 +27,21 @@
             <td>{{ device.ip_address }}</td>
             <td>{{ device.mac_address }}</td>
             <td>{{ device.manufacturer }}</td>
+            <td><button type="button" class="select-device" data-ip="{{ device.ip_address }}" data-mac="{{ device.mac_address }}" data-manufacturer="{{ device.manufacturer }}">Seleccionar</button></td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
   {% endif %}
+
+  <div id="device-modal" class="modal">
+    <div class="modal-content">
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Guardar dispositivo</button>
+      </form>
+    </div>
+  </div>
+
 {% endblock %}

@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import nmap, json, subprocess, re
 import openai
+from .forms import DeviceForm
 
 #from django.http import HttpResponse
 
@@ -87,12 +88,14 @@ def arp_scan_json():
 
 def arp_scan_view(request):
     if request.method == 'POST':
+        form = DeviceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('arp_scan')
+
         devices = arp_scan_json()
-        return render(request, 'arp_scan.html', {'devices': devices})
-    return render(request, 'arp_scan.html')
-
-
-# def generate_text(request):
-#     if request.method=='GET':
-#         port=request.POST.get('h')
-#         return render(request, 'generate_text.html', {'port':port})
+        return render(request, 'arp_scan.html', {'devices': devices, 'form': form})
+    else:
+        devices = arp_scan_json()
+        form = DeviceForm()
+        return render(request, 'arp_scan.html', {'devices': devices, 'form': form})
