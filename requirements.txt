@@ -5,3 +5,4 @@ Django==4.1.6
 dnspython==2.3.0
 sqlparse==0.4.3
 openai==0.26.5
+mysqlclient

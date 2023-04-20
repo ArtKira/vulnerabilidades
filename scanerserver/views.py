@@ -103,7 +103,30 @@ def Logout(request):
     logout(request)
     return redirect('Login')
 
+
 class ChangePasswordView(PasswordChangeView):
     template_name = 'change_password.html'
     success_url = reverse_lazy('Login')
 
+def user_registration(request):
+    if request.method == 'GET':
+        return render(request, 'user_registration.html', {
+            'form': UserCreationForm
+        })
+    else:
+        if request.POST['password1'] == request.POST['password2']:
+            try:
+                user = User.objects.create_user(
+                    username=request.POST['username'], password=request.POST['password1'])
+                user.save()
+                login(request, user)
+                return redirect('Login')
+            except:
+                return render(request, 'user_registration.html', {
+                    'form': UserCreationForm,
+                    'error': 'Usuario ya exites'
+                })
+        return render(request, 'user_registration.html', {
+            'form': UserCreationForm,
+            "error": 'Contraseñas no coiciden'
+        })

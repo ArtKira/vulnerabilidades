@@ -76,10 +76,21 @@ WSGI_APPLICATION = 'django_scaner.wsgi.application'
 
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'scanerserver',
+        'USER': 'Admin_Scan',
+        'PASSWORD': 'scanserver123',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}
+'''DATABASES = {
+    'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-}
+}'''
+
 
 
 # Password validation

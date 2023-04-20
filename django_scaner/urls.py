@@ -27,5 +27,5 @@ urlpatterns = [
     path('scan', views.scan, name='scan'),
     path('Logout/', views.Logout, name='Logout'),
     path('change_password/', ChangePasswordView.as_view(), name='change_password'),
-    #path('Registro/', views.Registro, name='Registro')#Borrar despues 
+    path('user_registration/', views.user_registration, name='user_registration')#Borrar despues 
 ]
