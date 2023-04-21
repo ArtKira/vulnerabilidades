@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Whatweb{% endblock %}
 {% block content %}
-<h1 class="titulo-resultado">Whatweb</h1>
-<form method="post" action="/whatweb/">
+<form method="post" class="form-escaneo" action="/whatweb/">
     {% csrf_token %}
+    <h1 class="titulo-resultado">Whatweb</h1>
     <label class="etiqueta-formulario" for="domain">Ingresa un dominio a escanear</label>
     <input class="input-escaneo" type="text" id="domain" name="domain">
     <button type="submit" class="boton-escaneo">Escanear</button>
@@ -29,8 +29,8 @@
 {% endif %}
 
 {% if domain == '' %}
-    <p class="ip-resultado">Dominio: Aun no ingresas un dominio</p>
+    <p class="ip-resultado">Objetivo: Aun no ingresas un objetivo</p>
 {% else %}
-    <p class="ip-resultado">Dominio: {{ domain }}</p>
+    <p class="ip-resultado">Objetivo: {{ domain }}</p>
 {% endif %}
 {% endblock %}

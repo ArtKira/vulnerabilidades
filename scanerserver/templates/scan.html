@@ -14,12 +14,35 @@
     <form method="post" class="form-escaneo" action="result">
         {% csrf_token %}
         <label class="etiqueta-formulario" for="host">Ingresa la direccion IP a escanear</label>
-        <input class="input-escaneo" type="text" id="host" name="host">
+        <select class="input-escaneo" id="host" name="host">
+            <option value="" disabled selected>Selecciona una dirección IP</option>
+            {% for device in devices %}
+                <option value="{{ device.ip_address }}">{{ device.ip_address }}</option>
+            {% endfor %}
+        
+        </select>
+        <input type="text" id="manual_host" name="manual_host" style="display: none;">
         <button type="submit" class="boton-escaneo">Escanear</button>
     </form>
     {% endblock %}
+    {% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const hostSelect = document.getElementById('host');
+    const manualHostInput = document.getElementById('manual_host');
+
+    hostSelect.addEventListener('change', function() {
+        if (hostSelect.value === 'manual') {
+            manualHostInput.style.display = 'block';
+            manualHostInput.required = true;
+        } else {
+            manualHostInput.style.display = 'none';
+            manualHostInput.required = false;
+        }
+    });
+});
+</script>
+{% endblock %}
+
 </body>
 </html>
-
-
-

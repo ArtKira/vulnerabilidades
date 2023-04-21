@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 import nmap, json, subprocess, re
 import openai
 from .forms import DeviceForm
+from .models import Device
 
 #from django.http import HttpResponse
 
@@ -9,14 +10,21 @@ from .forms import DeviceForm
 def scan(request):#definimos las funciones a ejecutar
     return render(request, 'scan.html')
 
-def result(request):#aqui resive la direccion IP para su escaneo
+def scan(request):
+    devices = Device.objects.all() # Recupera todos los dispositivos guardados en la base de datos
+    return render(request, 'scan.html', {'devices': devices})
+
+def result(request):#aqui recibe la direccion IP para su escaneo
     if request.method =='POST':
+        host=request.POST.get('host')
+        statehost="Host : %s" % (host)#muestra el estado 
+        
+        if not host:
+            return render(request, 'error.html', {'error': "Por favor, ingresa una dirección IP válida."})
+        
         try:
-            host=request.POST.get('host')
             nm=nmap.PortScanner()
             nm.scan(host,  arguments='-T5')
-
-            statehost="Host : %s" % (host)#muestra el estado 
             state="State : %s" % nm[host].state()#estado up 
             for proto in nm[host].all_protocols():
                 protocolo='Protocol : %s' % proto#indica el protocolo TCP
@@ -30,6 +38,7 @@ def result(request):#aqui resive la direccion IP para su escaneo
         except:
             return render(request, 'nullport.html', {'host':statehost, 'estado':state})
     return render(request, 'scan.html')
+
     
 
 def whatweb(domain):

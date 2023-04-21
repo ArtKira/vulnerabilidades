@@ -7,7 +7,6 @@
   <h1>Escáner de dispositivos en red local</h1>
   <form method="post">
     {% csrf_token %}
-    <button type="submit">Escanear dispositivos</button>
   </form>
 
   {% if devices %}
@@ -36,10 +35,10 @@
 
   <div id="device-modal" class="modal">
     <div class="modal-content">
-      <form method="post">
+      <form method="post" class="dark-form">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Guardar dispositivo</button>
+        <button type="submit" class="btn-dark">Guardar dispositivo</button>
       </form>
     </div>
   </div>
