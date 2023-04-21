@@ -9,4 +9,11 @@
 <!-- Muestra la descripción del puerto generada por la IA -->
 <p class="port-description">{{answ}}</p>
 
+<!-- Formulario para descargar el PDF -->
+<form method="post" action="?download=pdf">
+    {% csrf_token %}
+    <input type="hidden" name="port" value="{{port}}">
+    <button type="submit">Descargar PDF</button>
+</form>
+
 {% endblock %}

@@ -3,7 +3,11 @@ import nmap, json, subprocess, re
 import openai
 from .forms import DeviceForm
 from .models import Device
-
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
+from io import BytesIO
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
 #from django.http import HttpResponse
 
 # Create your views here.
@@ -57,16 +61,24 @@ def whatweb_view(request):
 
 
 
-def generate_text(request): # recibimos por request el puerto
+def generate_text(request):
     port = request.POST.get('port')
     if port:
-        openai.api_key="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"#key de openAI
-        prompt = f"Describe el puerto {port} y su función principal:"
-        completion=openai.Completion.create(engine="text-davinci-003", prompt=prompt, max_tokens=2048)
-        answ=completion.choices[0].text
-        return render(request, 'generate_text.html', {'answ': answ, 'port': port})
+        openai.api_key = "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"
+        prompt = f"Elabora un reporte como si fueras un experto sobre el puerto {port} y función principal y las posibles vulnerabilidades que tiene:"
+        completion = openai.Completion.create(engine="text-davinci-003", prompt=prompt, max_tokens=4000)
+        answ = completion.choices[0].text
+
+        if request.GET.get('download', None) == 'pdf':
+            buffer = create_pdf(port, answ)
+            response = FileResponse(buffer, content_type='application/pdf')
+            response['Content-Disposition'] = f'attachment; filename=Reporte_Puerto_{port}.pdf'
+            return response
+        else:
+            return render(request, 'generate_text.html', {'answ': answ, 'port': port})
     else:
         return render(request, 'error.html', {'error': "El puerto proporcionado no es válido."})
+
     
 
 def arp_scan_json():
@@ -108,3 +120,40 @@ def arp_scan_view(request):
         devices = arp_scan_json()
         form = DeviceForm()
         return render(request, 'arp_scan.html', {'devices': devices, 'form': form})
+
+def create_pdf(port, text):
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer, pagesize=letter)
+
+    pdf.setTitle(f"Reporte Puerto {port}")
+
+    pdf.setStrokeColor(colors.black)
+    pdf.setLineWidth(2)
+    pdf.rect(20, 20, letter[0] - 40, letter[1] - 40)
+
+    # Encabezado
+    pdf.setFont("Helvetica-Bold", 18)
+    pdf.drawCentredString(300, 750, f"Puerto: {port}")
+
+    # Texto del cuerpo
+    pdf.setFont("Helvetica", 12)
+    text_lines = text.splitlines()
+    y = 720
+    max_width = 500  # Establece el ancho máximo del texto en el PDF
+    margin_left = 50
+
+    for line in text_lines:
+        words = line.split()
+        x = margin_left
+        for word in words:
+            if x + pdf.stringWidth(word) > max_width:
+                y -= 14
+                x = margin_left
+            pdf.drawString(x, y, word)
+            x += pdf.stringWidth(word + " ")
+        y -= 14
+
+    pdf.showPage()
+    pdf.save()
+    buffer.seek(0)
+    return buffer
