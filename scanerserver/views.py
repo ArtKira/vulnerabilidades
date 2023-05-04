@@ -10,14 +10,28 @@ from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
 #from django.http import HttpResponse
 
+############### Login #####################
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
+from .forms import CustomAuthenticationForm
+############### Change Password ###########
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
+
 # Create your views here.
+@login_required
 def scan(request):#definimos las funciones a ejecutar
     return render(request, 'scan.html')
 
+@login_required
 def scan(request):
     devices = Device.objects.all() # Recupera todos los dispositivos guardados en la base de datos
     return render(request, 'scan.html', {'devices': devices})
 
+@login_required
 def result(request):#aqui recibe la direccion IP para su escaneo
     if request.method =='POST':
         host=request.POST.get('host')
@@ -44,7 +58,6 @@ def result(request):#aqui recibe la direccion IP para su escaneo
     return render(request, 'scan.html')
 
     
-
 def whatweb(domain):
     comando = ['whatweb', '--quiet', '--log-json=-', '--color=never', domain]
     output = subprocess.check_output(comando).decode('utf-8')
@@ -60,11 +73,10 @@ def whatweb_view(request):
     return render(request, 'whatweb.html')
 
 
-
 def generate_text(request):
     port = request.POST.get('port')
     if port:
-        openai.api_key = "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"
+        openai.api_key = "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"
         prompt = f"Elabora un reporte como si fueras un experto sobre el puerto {port} y función principal y las posibles vulnerabilidades que tiene:"
         completion = openai.Completion.create(engine="text-davinci-003", prompt=prompt, max_tokens=4000)
         answ = completion.choices[0].text
@@ -80,7 +92,6 @@ def generate_text(request):
         return render(request, 'error.html', {'error': "El puerto proporcionado no es válido."})
 
     
-
 def arp_scan_json():
     output = subprocess.check_output(["arp-scan", "--localnet"]).decode('utf-8')
 
@@ -157,3 +168,56 @@ def create_pdf(port, text):
     pdf.save()
     buffer.seek(0)
     return buffer
+
+############################ Login #####################################
+
+def Login(request):
+    if request.method == 'GET':
+        return render(request, 'Login.html', {
+            'form': CustomAuthenticationForm(),
+            'title': 'Iniciar sesión en VulScaner Intelligent',
+        })
+    else:
+        user = authenticate(
+            request, username=request.POST['username'], password=request.POST['password'])
+        if user is None:
+            return render(request, 'Login.html', {
+                'form': CustomAuthenticationForm(),
+                'error': 'Usuario o contraseña es incorrecta'
+            })
+        else:
+            login(request, user)
+            return redirect('arp_scan')
+
+@login_required
+def Logout(request):
+    logout(request)
+    return redirect('Login')
+
+
+class ChangePasswordView(PasswordChangeView):
+    template_name = 'change_password.html'
+    success_url = reverse_lazy('Login')
+
+def user_registration(request):
+    if request.method == 'GET':
+        return render(request, 'user_registration.html', {
+            'form': UserCreationForm
+        })
+    else:
+        if request.POST['password1'] == request.POST['password2']:
+            try:
+                user = User.objects.create_user(
+                    username=request.POST['username'], password=request.POST['password1'])
+                user.save()
+                login(request, user)
+                return redirect('Login')
+            except:
+                return render(request, 'user_registration.html', {
+                    'form': UserCreationForm,
+                    'error': 'Usuario ya exites'
+                })
+        return render(request, 'user_registration.html', {
+            'form': UserCreationForm,
+            "error": 'Contraseñas no coiciden'
+        })

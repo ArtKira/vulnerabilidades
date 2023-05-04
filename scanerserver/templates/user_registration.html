@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static '../static/assets/css/style1.css' %}">
+    <title>Django CRUD Application</title>
+</head>
+<body>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {% load static %}
+    <div class="main-login">
+        <div class="left-login">
+            <h1>VulScaner Intelligent</h1>
+            <img src="../static/assets/images/cloud-hosting-animate.svg" class="left-img" alt="Ransomware">
+        </div>
+        <div class="right-login">
+            <div class="card-login">
+                <h1>Sing Up</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="textfield">
+                        {{ form.username.label_tag }}
+                        {{ form.username }}
+                    </div>
+                    <div class="textfield">
+                         {{ form.password1.label_tag }}
+                         {{ form.password1 }}
+                     </div>
+                    <div class="textfield">
+                        {{ form.password2.label_tag }}
+                        {{ form.password2 }}
+                    </div>
+                </form>
+                <button class="btn-login" type="submit">SIGN UP</button>
+                {{error}}
+            </div> 
+        </div>
+    </div>
+</form>
+</body>
+</html>
